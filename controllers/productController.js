@@ -1,5 +1,4 @@
 const productService = require('../services/productService');
-const cacheService = require('../services/cacheService');
 async function getProducts(req, res) {
     try {
         const products = await productService.getProducts();
@@ -62,7 +61,6 @@ async function updateProduct(req, res) {
             });
         }
 
-        cacheService.deleteAll();
 
         res.json(product);
 

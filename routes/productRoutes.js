@@ -1,5 +1,5 @@
 const express = require('express');
-
+const invalidateCache = require('../middleware/invalidateCache');
 const router = express.Router();
 
 const productController = require('../controllers/productController');
@@ -19,22 +19,25 @@ router.get(
 
 router.post(
     '/products',
+    invalidateCache,
     productController.createProduct
 );
 
 router.put(
     '/products/:id',
+    invalidateCache,
     productController.updateProduct
 );
 
 router.patch(
     '/products/:id',
+    invalidateCache,
     productController.updateProduct
 );
 
 router.delete(
     '/products/:id',
+    invalidateCache,
     productController.deleteProduct
 );
-
 module.exports = router;
