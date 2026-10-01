@@ -1,9 +1,11 @@
 const productService = require('../services/productService');
+
 async function getProducts(req, res) {
     try {
         const products = await productService.getProducts();
 
         res.json(products);
+
     } catch (err) {
         console.log(err);
 
@@ -21,7 +23,14 @@ async function getProductById(req, res) {
 
         const product = await productService.getProductById(id);
 
+        if (!product) {
+            return res.status(404).json({
+                error: 'Product not found'
+            });
+        }
+
         res.json(product);
+
     } catch (err) {
         console.log(err);
 
@@ -30,11 +39,10 @@ async function getProductById(req, res) {
         });
     }
 }
+
 async function createProduct(req, res) {
     try {
         const product = await productService.createProduct(req.body);
-
-        cacheService.deleteAll();
 
         res.status(201).json(product);
 
@@ -46,6 +54,7 @@ async function createProduct(req, res) {
         });
     }
 }
+
 async function updateProduct(req, res) {
     try {
         const id = Number(req.params.id);
@@ -61,7 +70,6 @@ async function updateProduct(req, res) {
             });
         }
 
-
         res.json(product);
 
     } catch (err) {
@@ -72,6 +80,7 @@ async function updateProduct(req, res) {
         });
     }
 }
+
 async function deleteProduct(req, res) {
     try {
         const id = Number(req.params.id);
@@ -84,8 +93,6 @@ async function deleteProduct(req, res) {
             });
         }
 
-        cacheService.deleteAll();
-
         res.json(product);
 
     } catch (err) {
@@ -96,6 +103,7 @@ async function deleteProduct(req, res) {
         });
     }
 }
+
 module.exports = {
     getProducts,
     getProductById,
